@@ -7,30 +7,33 @@
   <title>Login Page</title>
 </head>
 <body class="bg-gray-900 flex items-center justify-center h-screen">
-  <div id="loginContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
-    <h2 class="text-2xl font-semibold text-white text-center mb-6">Tap Transit</h2>
-    <p id="promptMessage" class="text-white text-center mb-4">Please scan your RFID card to log in.</p>
+  <!-- Login Container -->
+  <div id="loginContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8 text-center">
+    <h2 class="text-2xl font-semibold text-white mb-6">Tap Transit</h2>
+    <p id="promptMessage" class="text-white mb-4">Please scan your RFID card to log in.</p>
     <button 
       id="scanButton" 
       class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
     >
-      Start Scanning
+      Scan RFID
     </button>
-    <div id="message" class="text-sm text-center text-red-500 hidden"></div>
+    <p id="scanningMessage" class="text-white mt-4 hidden">Scanning... your RFID</p>
+    <div id="errorMessage" class="text-sm text-red-500 mt-4 hidden"></div>
   </div>
 
+  <!-- Full-Screen Loading -->
   <div id="loadingScreen" class="hidden fixed inset-0 bg-gray-900 flex flex-col items-center justify-center">
     <div class="loader border-t-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
-    <p id="loadingMessage" class="text-white mt-4"></p>
+    <p class="text-white mt-4">Logging in...</p>
   </div>
 
   <script>
     const scanButton = document.getElementById('scanButton');
     const loginContainer = document.getElementById('loginContainer');
     const loadingScreen = document.getElementById('loadingScreen');
-    const loadingMessage = document.getElementById('loadingMessage');
-    const messageDiv = document.getElementById('message');
     const promptMessage = document.getElementById('promptMessage');
+    const scanningMessage = document.getElementById('scanningMessage');
+    const errorMessage = document.getElementById('errorMessage');
 
     // Simulated RFID data
     const rfidCards = {
@@ -39,36 +42,32 @@
     };
 
     scanButton.addEventListener('click', () => {
-      // Change to scanning state
-      promptMessage.textContent = "";
-      messageDiv.classList.add('hidden');
-      loginContainer.classList.add('hidden');
-      loadingScreen.classList.remove('hidden');
-      loadingMessage.textContent = "Scanning your RFID card...";
+      // Transition to "Scanning" state
+      scanningMessage.classList.remove('hidden');
+      errorMessage.classList.add('hidden');
 
-      // Simulate a delay for RFID scanning
+      // Simulate RFID scanning process
       setTimeout(() => {
-        const scannedRFID = 'rfid12345'; // Simulated scanned RFID
+        const scannedRFID = 'rfid12345'; // Simulated RFID scan
         processRFID(scannedRFID);
-      }, 3000); // Simulate a 3-second scanning process
+      }, 2000); // Simulate a 2-second scan delay
     });
 
     function processRFID(scannedRFID) {
       if (rfidCards[scannedRFID]) {
-        const { email, password } = rfidCards[scannedRFID];
+        // Transition to "Logging in" state
+        loginContainer.classList.add('hidden');
+        loadingScreen.classList.remove('hidden');
 
-        // Simulate logging in process
-        loadingMessage.textContent = "Logging in...";
         setTimeout(() => {
-          console.log(`Email: ${email}, Password: ${password}`); // Debugging purposes
-          window.location.href = 'edit.html'; // Redirect to next page
-        }, 2000); // 2-second delay to mimic login
+          console.log(`Logged in as: ${rfidCards[scannedRFID].email}`); // Debugging
+          window.location.href = 'edit.html'; // Redirect after login
+        }, 3000); // 3-second logging in delay
       } else {
-        loadingScreen.classList.add('hidden');
-        loginContainer.classList.remove('hidden');
-        promptMessage.textContent = "Please scan your RFID card to log in.";
-        messageDiv.textContent = 'Invalid RFID card';
-        messageDiv.classList.remove('hidden');
+        // Show error and reset state
+        scanningMessage.classList.add('hidden');
+        errorMessage.textContent = 'Invalid RFID card. Please try again.';
+        errorMessage.classList.remove('hidden');
       }
     }
   </script>
