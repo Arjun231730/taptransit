@@ -87,15 +87,14 @@
           try {
             const loginMessage = await loginWithRfidData(email, password);
             alert(loginMessage);
-            loadingScreen.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
 
-            // Simulate logout and repeat login process
+            // Simulate logout after a successful login
             setTimeout(() => {
               alert('Logging out...');
-              handleLoginProcess(); // Restart login process
+              loadingScreen.classList.add('hidden');
+              mainContainer.classList.remove('hidden');
+              resetLoginProcess();
             }, 3000); // Simulated delay for logout
-
           } catch (loginError) {
             loadingScreen.classList.add('hidden');
             mainContainer.classList.remove('hidden');
@@ -108,6 +107,13 @@
         messageDiv.textContent = error;
         messageDiv.classList.remove('hidden');
       }
+    }
+
+    function resetLoginProcess() {
+      scanMessage.classList.add('hidden');
+      messageDiv.classList.add('hidden');
+      loadingScreen.classList.add('hidden');
+      mainContainer.classList.remove('hidden');
     }
 
     scanRfidButton.addEventListener('click', handleLoginProcess);
