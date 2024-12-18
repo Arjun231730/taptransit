@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,32 +40,63 @@
         Login
       </button>
     </form>
+    <div class="mt-4">
+      <button 
+        id="scanRfidButton"
+        class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+      >
+        Scan RFID Card
+      </button>
+    </div>
+    <div id="scanMessage" class="mt-4 text-sm text-center text-gray-300 hidden">Scan your card...</div>
+    <div id="message" class="mt-4 text-sm text-center text-red-500 hidden"></div>
     <div class="mt-6 text-sm text-center text-gray-600">
       Don’t have an account? <a href="#" class="text-blue-500 hover:underline">Sign up</a>
     </div>
-    <div id="message" class="mt-4 text-sm text-center text-red-500 hidden"></div>
   </div>
 
   <script>
     const loginForm = document.getElementById('loginForm');
+    const scanRfidButton = document.getElementById('scanRfidButton');
+    const scanMessage = document.getElementById('scanMessage');
     const messageDiv = document.getElementById('message');
 
-    // Example credentials
-    const exampleEmail = 'test@example.com';
-    const examplePassword = 'password123';
+    // Example credentials stored in RFID (simulate reading from an RFID card)
+    const rfidCardData = {
+      email: 'rfiduser@example.com',
+      password: 'rfidpassword123'
+    };
 
+    // Handle manual login
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
 
-      if (email === exampleEmail && password === examplePassword) {
+      if (email === rfidCardData.email && password === rfidCardData.password) {
         messageDiv.classList.add('hidden');
         window.location.href = 'edit.html';
       } else {
         messageDiv.textContent = 'Invalid email or password';
         messageDiv.classList.remove('hidden');
       }
+    });
+
+    // Handle RFID scanning
+    scanRfidButton.addEventListener('click', () => {
+      scanMessage.classList.remove('hidden');
+      messageDiv.classList.add('hidden');
+
+      // Simulate a delay for scanning
+      setTimeout(() => {
+        const { email, password } = rfidCardData;
+        if (email && password) {
+          scanMessage.classList.add('hidden');
+          window.location.href = 'edit.html';
+        } else {
+          scanMessage.textContent = 'RFID scan failed. Please try again.';
+        }
+      }, 2000); // Simulating a 2-second scan delay
     });
   </script>
 </body>
