@@ -9,14 +9,8 @@
 <body class="bg-gray-900 flex items-center justify-center h-screen">
   <div id="loginContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
     <h2 class="text-2xl font-semibold text-white text-center mb-6">Tap Transit</h2>
-    <p class="text-white text-center mb-4">Please scan your RFID card to log in.</p>
-    <button 
-      id="scanButton" 
-      class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      Scan RFID
-    </button>
-    <div id="message" class="mt-4 text-sm text-center text-red-500 hidden"></div>
+    <p id="promptMessage" class="text-white text-center mb-4">Please scan your RFID card to log in.</p>
+    <div id="message" class="text-sm text-center text-red-500 hidden"></div>
   </div>
 
   <div id="loadingScreen" class="hidden fixed inset-0 bg-gray-900 flex flex-col items-center justify-center">
@@ -25,10 +19,10 @@
   </div>
 
   <script>
-    const scanButton = document.getElementById('scanButton');
     const loginContainer = document.getElementById('loginContainer');
     const loadingScreen = document.getElementById('loadingScreen');
     const messageDiv = document.getElementById('message');
+    const promptMessage = document.getElementById('promptMessage');
 
     // Simulated RFID data
     const rfidCards = {
@@ -36,10 +30,20 @@
       'rfid67890': { email: 'user@example.com', password: 'userpassword' }
     };
 
-    scanButton.addEventListener('click', () => {
-      // Simulate RFID scanning
-      const scannedRFID = 'rfid12345'; // Replace this with actual RFID reading logic
+    // Function to simulate RFID scanning
+    function waitForRFIDScan() {
+      promptMessage.textContent = "Waiting for RFID card scan...";
+      messageDiv.classList.add('hidden');
 
+      // Simulating a delay for RFID scan (replace this with actual RFID reader integration)
+      setTimeout(() => {
+        const scannedRFID = 'rfid12345'; // Simulated scanned RFID
+        processRFID(scannedRFID);
+      }, 3000); // Simulate a 3-second delay for scanning
+    }
+
+    // Function to process the scanned RFID
+    function processRFID(scannedRFID) {
       if (rfidCards[scannedRFID]) {
         const { email, password } = rfidCards[scannedRFID];
 
@@ -52,10 +56,14 @@
           window.location.href = 'edit.html'; // Redirect to next page
         }, 2000); // 2-second delay to mimic login
       } else {
+        promptMessage.textContent = "Please scan your RFID card to log in.";
         messageDiv.textContent = 'Invalid RFID card';
         messageDiv.classList.remove('hidden');
       }
-    });
+    }
+
+    // Start the RFID scanning process on page load
+    window.onload = waitForRFIDScan;
   </script>
 
   <style>
