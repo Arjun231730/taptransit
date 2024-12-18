@@ -30,33 +30,31 @@
     const loadingScreen = document.getElementById('loadingScreen');
     const messageDiv = document.getElementById('message');
 
-    // Example RFID credentials
-    const rfidData = {
-      id: 'rfid12345',
-      password: 'password123'
+    // Simulated RFID data
+    const rfidCards = {
+      'rfid12345': { email: 'test@example.com', password: 'password123' },
+      'rfid67890': { email: 'user@example.com', password: 'userpassword' }
     };
 
     scanButton.addEventListener('click', () => {
-      // Simulate RFID scanning process
-      messageDiv.classList.add('hidden');
-      loginContainer.classList.add('hidden');
-      loadingScreen.classList.remove('hidden');
+      // Simulate RFID scanning
+      const scannedRFID = 'rfid12345'; // Replace this with actual RFID reading logic
 
-      // Simulate a delay for the logging-in process
-      setTimeout(() => {
-        // Assume the RFID data is correct
-        const { id, password } = rfidData;
+      if (rfidCards[scannedRFID]) {
+        const { email, password } = rfidCards[scannedRFID];
 
-        // Redirect to another page or perform a success action
-        if (id && password) {
-          window.location.href = 'edit.html';
-        } else {
-          loadingScreen.classList.add('hidden');
-          loginContainer.classList.remove('hidden');
-          messageDiv.textContent = 'Failed to read RFID data';
-          messageDiv.classList.remove('hidden');
-        }
-      }, 2000); // 2-second delay
+        // Show loading screen
+        loginContainer.classList.add('hidden');
+        loadingScreen.classList.remove('hidden');
+
+        setTimeout(() => {
+          console.log(`Email: ${email}, Password: ${password}`); // Debugging purposes
+          window.location.href = 'edit.html'; // Redirect to next page
+        }, 2000); // 2-second delay to mimic login
+      } else {
+        messageDiv.textContent = 'Invalid RFID card';
+        messageDiv.classList.remove('hidden');
+      }
     });
   </script>
 
@@ -67,4 +65,3 @@
   </style>
 </body>
 </html>
-
