@@ -7,7 +7,7 @@
   <title>Login Page</title>
 </head>
 <body class="bg-gray-900 flex items-center justify-center h-screen">
-  <div id="mainContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
+  <div class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
     <h2 class="text-2xl font-semibold text-white text-center mb-6">Tap Transit</h2>
     <div id="rfidLoginSection">
       <p class="text-white text-center mb-4">Please scan your RFID card to log in</p>
@@ -25,19 +25,10 @@
     </div>
   </div>
 
-  <div id="loadingScreen" class="hidden fixed inset-0 bg-gray-900 flex items-center justify-center">
-    <div class="flex flex-col items-center">
-      <div class="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500 border-solid mb-4"></div>
-      <p class="text-white text-xl">Logging in...</p>
-    </div>
-  </div>
-
   <script>
     const scanRfidButton = document.getElementById('scanRfidButton');
     const scanMessage = document.getElementById('scanMessage');
     const messageDiv = document.getElementById('message');
-    const mainContainer = document.getElementById('mainContainer');
-    const loadingScreen = document.getElementById('loadingScreen');
 
     // Simulating reading RFID card credentials
     function readRfidCard() {
@@ -58,20 +49,6 @@
       });
     }
 
-    // Simulating login process with the retrieved RFID data
-    async function loginWithRfidData(email, password) {
-      return new Promise((resolve, reject) => {
-        // Simulated login validation
-        setTimeout(() => {
-          if (email === 'rfiduser@example.com' && password === 'rfidpassword123') {
-            resolve('Login successful');
-          } else {
-            reject('Login failed. Invalid credentials.');
-          }
-        }, 1000); // Simulated delay for login validation
-      });
-    }
-
     // Handle RFID scanning and login
     scanRfidButton.addEventListener('click', async () => {
       scanMessage.classList.remove('hidden');
@@ -79,22 +56,10 @@
 
       try {
         const { email, password } = await readRfidCard();
-        scanMessage.classList.add('hidden');
-        loadingScreen.classList.remove('hidden');
-        mainContainer.classList.add('hidden');
-
-        setTimeout(async () => {
-          try {
-            const loginMessage = await loginWithRfidData(email, password);
-            alert(loginMessage);
-            window.location.href = 'edit.html'; // Redirect on successful login
-          } catch (loginError) {
-            loadingScreen.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
-            messageDiv.textContent = loginError;
-            messageDiv.classList.remove('hidden');
-          }
-        }, 5000); // Simulated delay for "Logging in..."
+        // Simulating login
+        if (email && password) {
+          window.location.href = 'edit.html'; // Redirect on successful login
+        }
       } catch (error) {
         scanMessage.classList.add('hidden');
         messageDiv.textContent = error;
