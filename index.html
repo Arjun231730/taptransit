@@ -70,6 +70,14 @@
         errorMessage.classList.remove('hidden');
       }
     }
+
+    // Ensure the page always starts with the "Scan RFID" prompt
+    window.onload = () => {
+      scanningMessage.classList.add('hidden');
+      errorMessage.classList.add('hidden');
+      loginContainer.classList.remove('hidden');
+      loadingScreen.classList.add('hidden');
+    };
   </script>
 
   <style>
