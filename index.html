@@ -89,10 +89,13 @@
             alert(loginMessage);
             loadingScreen.classList.add('hidden');
             mainContainer.classList.remove('hidden');
-            // Simulate logging out and returning to the login page
+
+            // Simulate logout and repeat login process
             setTimeout(() => {
-              window.location.reload(); // Reload page for new login
-            }, 1000);
+              alert('Logging out...');
+              handleLoginProcess(); // Restart login process
+            }, 3000); // Simulated delay for logout
+
           } catch (loginError) {
             loadingScreen.classList.add('hidden');
             mainContainer.classList.remove('hidden');
