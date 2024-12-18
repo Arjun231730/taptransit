@@ -91,13 +91,10 @@
             // Simulate logout after a successful login
             setTimeout(() => {
               alert('Logging out...');
-              loadingScreen.classList.add('hidden');
-              mainContainer.classList.remove('hidden');
               resetLoginProcess();
             }, 3000); // Simulated delay for logout
           } catch (loginError) {
-            loadingScreen.classList.add('hidden');
-            mainContainer.classList.remove('hidden');
+            resetLoginProcess();
             messageDiv.textContent = loginError;
             messageDiv.classList.remove('hidden');
           }
