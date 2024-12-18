@@ -49,6 +49,20 @@
       });
     }
 
+    // Simulating login process with the retrieved RFID data
+    async function loginWithRfidData(email, password) {
+      return new Promise((resolve, reject) => {
+        // Simulated login validation
+        setTimeout(() => {
+          if (email === 'rfiduser@example.com' && password === 'rfidpassword123') {
+            resolve('Login successful');
+          } else {
+            reject('Login failed. Invalid credentials.');
+          }
+        }, 1000); // Simulated delay for login validation
+      });
+    }
+
     // Handle RFID scanning and login
     scanRfidButton.addEventListener('click', async () => {
       scanMessage.classList.remove('hidden');
@@ -56,9 +70,17 @@
 
       try {
         const { email, password } = await readRfidCard();
-        // Simulating login
-        if (email && password) {
+        scanMessage.textContent = 'RFID scanned. Logging in...';
+
+        try {
+          const loginMessage = await loginWithRfidData(email, password);
+          scanMessage.classList.add('hidden');
+          alert(loginMessage);
           window.location.href = 'edit.html'; // Redirect on successful login
+        } catch (loginError) {
+          scanMessage.classList.add('hidden');
+          messageDiv.textContent = loginError;
+          messageDiv.classList.remove('hidden');
         }
       } catch (error) {
         scanMessage.classList.add('hidden');
