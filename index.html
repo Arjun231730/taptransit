@@ -73,7 +73,7 @@
     }
 
     // Handle RFID scanning and login
-    scanRfidButton.addEventListener('click', async () => {
+    async function handleLoginProcess() {
       scanMessage.classList.remove('hidden');
       messageDiv.classList.add('hidden');
 
@@ -87,7 +87,12 @@
           try {
             const loginMessage = await loginWithRfidData(email, password);
             alert(loginMessage);
-            window.location.href = 'edit.html'; // Redirect on successful login
+            loadingScreen.classList.add('hidden');
+            mainContainer.classList.remove('hidden');
+            // Simulate logging out and returning to the login page
+            setTimeout(() => {
+              window.location.reload(); // Reload page for new login
+            }, 1000);
           } catch (loginError) {
             loadingScreen.classList.add('hidden');
             mainContainer.classList.remove('hidden');
@@ -100,7 +105,9 @@
         messageDiv.textContent = error;
         messageDiv.classList.remove('hidden');
       }
-    });
+    }
+
+    scanRfidButton.addEventListener('click', handleLoginProcess);
   </script>
 </body>
 </html>
