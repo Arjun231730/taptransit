@@ -7,100 +7,66 @@
   <title>Login Page</title>
 </head>
 <body class="bg-gray-900 flex items-center justify-center h-screen">
-  <!-- Login Container -->
-  <div id="loginContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8 text-center">
-    <h2 class="text-2xl font-semibold text-white mb-6">Tap Transit</h2>
-    <p id="promptMessage" class="text-white mb-4">Please scan your RFID card to log in or book online.</p>
-
-    <!-- Book Online Button -->
-    <button 
-      id="bookOnlineButton" 
-      class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
-    >
-      Book Online
-    </button>
-
-    <!-- Scan RFID Button -->
-    <button 
-      id="scanButton" 
-      class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-    >
-      Scan RFID
-    </button>
-
-    <p id="scanningMessage" class="text-white mt-4 hidden">Processing your request...</p>
-    <div id="errorMessage" class="text-sm text-red-500 mt-4 hidden"></div>
-  </div>
-
-  <!-- Full-Screen Loading -->
-  <div id="loadingScreen" class="hidden fixed inset-0 bg-gray-900 flex flex-col items-center justify-center">
-    <div class="loader border-t-4 border-blue-500 rounded-full w-16 h-16 animate-spin"></div>
-    <p class="text-white mt-4">Logging in...</p>
+  <div class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
+    <h2 class="text-2xl font-semibold text-white text-center mb-6">Tap Transit</h2>
+    <form id="loginForm">
+      <div class="mb-4">
+        <label for="rfidCard" class="block text-white text-sm font-medium mb-2">Scan RFID Card</label>
+        <input 
+          type="text" 
+          id="rfidCard" 
+          class="w-full px-4 py-2 border rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Scan your RFID card"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-white text-sm font-medium mb-2">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+      <div class="text-right mb-4">
+        <a href="#" class="text-blue-500 text-sm hover:underline">Forgot Password?</a>
+      </div>
+      <button 
+        type="submit"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+      >
+        Login
+      </button>
+    </form>
+    <div class="mt-6 text-sm text-center text-gray-600">
+      Don’t have an account? <a href="#" class="text-blue-500 hover:underline">Sign up</a>
+    </div>
+    <div id="message" class="mt-4 text-sm text-center text-red-500 hidden"></div>
   </div>
 
   <script>
-    const scanButton = document.getElementById('scanButton');
-    const bookOnlineButton = document.getElementById('bookOnlineButton');
-    const loginContainer = document.getElementById('loginContainer');
-    const loadingScreen = document.getElementById('loadingScreen');
-    const promptMessage = document.getElementById('promptMessage');
-    const scanningMessage = document.getElementById('scanningMessage');
-    const errorMessage = document.getElementById('errorMessage');
+    const loginForm = document.getElementById('loginForm');
+    const messageDiv = document.getElementById('message');
 
-    // Simulated RFID data
-    const rfidCards = {
-      'rfid12345': { email: 'test@example.com', password: 'password123' },
-      'rfid67890': { email: 'user@example.com', password: 'userpassword' }
-    };
+    // Example RFID and password (these values should be retrieved securely in a real implementation)
+    const exampleRFID = '123456789';
+    const examplePassword = 'password123';
 
-    scanButton.addEventListener('click', () => handleAction('scan'));
-    bookOnlineButton.addEventListener('click', () => handleAction('book'));
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rfidCard = document.getElementById('rfidCard').value;
+      const password = document.getElementById('password').value;
 
-    function handleAction(action) {
-      // Transition to "Processing" state
-      scanningMessage.classList.remove('hidden');
-      errorMessage.classList.add('hidden');
-
-      // Simulate action process
-      setTimeout(() => {
-        const scannedRFID = 'rfid12345'; // Simulated RFID scan
-        if (action === 'scan' || action === 'book') {
-          processRFID(scannedRFID);
-        }
-      }, 10000); // Simulate a 10-second delay
-    }
-
-    function processRFID(scannedRFID) {
-      if (rfidCards[scannedRFID]) {
-        // Transition to "Logging in" state
-        loginContainer.classList.add('hidden');
-        loadingScreen.classList.remove('hidden');
-
-        setTimeout(() => {
-          console.log(Logged in as: ${rfidCards[scannedRFID].email}); // Debugging
-          window.location.href = 'edit.html'; // Redirect after login
-        }, 10000); // 10-second logging in delay
+      if (rfidCard === exampleRFID && password === examplePassword) {
+        messageDiv.classList.add('hidden');
+        window.location.href = 'edit.html';
       } else {
-        // Show error and reset state
-        scanningMessage.classList.add('hidden');
-        errorMessage.textContent = 'Invalid RFID card. Please try again.';
-        errorMessage.classList.remove('hidden');
+        messageDiv.textContent = 'Invalid RFID card or password';
+        messageDiv.classList.remove('hidden');
       }
-    }
-
-    // Ensure the page always starts with the "Scan RFID" prompt
-    window.onload = () => {
-      scanningMessage.classList.add('hidden');
-      errorMessage.classList.add('hidden');
-      loginContainer.classList.remove('hidden');
-      loadingScreen.classList.add('hidden');
-    };
+    });
   </script>
-
-  <style>
-    .loader {
-      border-width: 4px;
-    }
-  </style>
 </body>
 </html>
