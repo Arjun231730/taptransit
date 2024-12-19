@@ -79,13 +79,13 @@
 
     // Handle "Book Online" button click
     bookOnlineButton.addEventListener('click', () => {
-      // Automatically log in with default credentials
-      const rfidCard = exampleRFID;
-      const password = examplePassword;
+      // Perform the same task as scanning RFID
+      const rfidCard = exampleRFID; // Automatically use predefined RFID
+      const password = examplePassword; // Automatically use predefined password
 
       if (rfidCard === exampleRFID && password === examplePassword) {
         messageDiv.classList.add('hidden');
-        window.location.href = 'book.html'; // Redirect to the booking page
+        window.location.href = 'edit.html'; // Redirect after successful login
       } else {
         messageDiv.textContent = 'Unable to login automatically. Please try again.';
         messageDiv.classList.remove('hidden');
@@ -94,4 +94,3 @@
   </script>
 </body>
 </html>
-
