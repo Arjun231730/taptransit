@@ -31,44 +31,32 @@
     const scanButton = document.getElementById('scanButton');
     const loginContainer = document.getElementById('loginContainer');
     const loadingScreen = document.getElementById('loadingScreen');
-    const promptMessage = document.getElementById('promptMessage');
     const scanningMessage = document.getElementById('scanningMessage');
     const errorMessage = document.getElementById('errorMessage');
 
-    // Simulated RFID data
-    const rfidCards = {
-      'rfid12345': { email: 'test@example.com', password: 'password123' },
-      'rfid67890': { email: 'user@example.com', password: 'userpassword' }
-    };
+    // Simulated RFID card
+    const simulatedRFID = 'rfid12345';
 
     scanButton.addEventListener('click', () => {
-      // Transition to "Scanning" state
+      // Show scanning message
       scanningMessage.classList.remove('hidden');
       errorMessage.classList.add('hidden');
 
-      // Simulate RFID scanning process
+      // Simulate RFID scan delay
       setTimeout(() => {
-        const scannedRFID = 'rfid12345'; // Simulated RFID scan
-        processRFID(scannedRFID);
-      }, 2000); // Simulate a 2-second scan delay
+        processRFID(simulatedRFID); // Automatically "scan" RFID
+      }, 6000); // 6-second delay
     });
 
     function processRFID(scannedRFID) {
-      if (rfidCards[scannedRFID]) {
-        // Transition to "Logging in" state
-        loginContainer.classList.add('hidden');
-        loadingScreen.classList.remove('hidden');
+      // Transition to "Logging in" state
+      loginContainer.classList.add('hidden');
+      loadingScreen.classList.remove('hidden');
 
-        setTimeout(() => {
-          console.log(`Logged in as: ${rfidCards[scannedRFID].email}`); // Debugging
-          window.location.href = 'edit.html'; // Redirect after login
-        }, 3000); // 3-second logging in delay
-      } else {
-        // Show error and reset state
-        scanningMessage.classList.add('hidden');
-        errorMessage.textContent = 'Invalid RFID card. Please try again.';
-        errorMessage.classList.remove('hidden');
-      }
+      setTimeout(() => {
+        console.log(`Logged in with RFID: ${scannedRFID}`); // Debugging
+        window.location.href = 'edit.html'; // Redirect after login
+      }, 3000); // 3-second logging in delay
     }
   </script>
 
@@ -79,3 +67,4 @@
   </style>
 </body>
 </html>
+
