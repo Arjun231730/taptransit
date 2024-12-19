@@ -35,9 +35,16 @@
       </div>
       <button 
         type="submit"
-        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
       >
         Login
+      </button>
+      <button 
+        id="bookOnlineButton"
+        type="button"
+        class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+      >
+        Book Online
       </button>
     </form>
     <div class="mt-6 text-sm text-center text-gray-600">
@@ -48,12 +55,14 @@
 
   <script>
     const loginForm = document.getElementById('loginForm');
+    const bookOnlineButton = document.getElementById('bookOnlineButton');
     const messageDiv = document.getElementById('message');
 
     // Example RFID and password (these values should be retrieved securely in a real implementation)
     const exampleRFID = '123456789';
     const examplePassword = 'password123';
 
+    // Handle manual login form submission
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const rfidCard = document.getElementById('rfidCard').value;
@@ -67,6 +76,22 @@
         messageDiv.classList.remove('hidden');
       }
     });
+
+    // Handle "Book Online" button click
+    bookOnlineButton.addEventListener('click', () => {
+      // Automatically log in with default credentials
+      const rfidCard = exampleRFID;
+      const password = examplePassword;
+
+      if (rfidCard === exampleRFID && password === examplePassword) {
+        messageDiv.classList.add('hidden');
+        window.location.href = 'book.html'; // Redirect to the booking page
+      } else {
+        messageDiv.textContent = 'Unable to login automatically. Please try again.';
+        messageDiv.classList.remove('hidden');
+      }
+    });
   </script>
 </body>
 </html>
+
