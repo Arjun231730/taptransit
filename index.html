@@ -67,7 +67,7 @@
         if (action === 'scan' || action === 'book') {
           processRFID(scannedRFID);
         }
-      }, 2000); // Simulate a 10-second delay
+      }, 10000); // Simulate a 10-second delay
     }
 
     function processRFID(scannedRFID) {
@@ -79,7 +79,7 @@
         setTimeout(() => {
           console.log(`Logged in as: ${rfidCards[scannedRFID].email}`); // Debugging
           window.location.href = 'edit.html'; // Redirect after login
-        }, 3000); // 10-second logging in delay
+        }, 10000); // 10-second logging in delay
       } else {
         // Show error and reset state
         scanningMessage.classList.add('hidden');
