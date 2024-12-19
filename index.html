@@ -10,14 +10,25 @@
   <!-- Login Container -->
   <div id="loginContainer" class="bg-gray-800 shadow-lg rounded-lg w-96 p-8 text-center">
     <h2 class="text-2xl font-semibold text-white mb-6">Tap Transit</h2>
-    <p id="promptMessage" class="text-white mb-4">Please scan your RFID card to log in.</p>
+    <p id="promptMessage" class="text-white mb-4">Please scan your RFID card to log in or book online.</p>
+
+    <!-- Book Online Button -->
+    <button 
+      id="bookOnlineButton" 
+      class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 mb-4"
+    >
+      Book Online
+    </button>
+
+    <!-- Scan RFID Button -->
     <button 
       id="scanButton" 
       class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
     >
       Scan RFID
     </button>
-    <p id="scanningMessage" class="text-white mt-4 hidden">Scanning... your RFID</p>
+
+    <p id="scanningMessage" class="text-white mt-4 hidden">Processing your request...</p>
     <div id="errorMessage" class="text-sm text-red-500 mt-4 hidden"></div>
   </div>
 
@@ -29,6 +40,7 @@
 
   <script>
     const scanButton = document.getElementById('scanButton');
+    const bookOnlineButton = document.getElementById('bookOnlineButton');
     const loginContainer = document.getElementById('loginContainer');
     const loadingScreen = document.getElementById('loadingScreen');
     const promptMessage = document.getElementById('promptMessage');
@@ -41,17 +53,22 @@
       'rfid67890': { email: 'user@example.com', password: 'userpassword' }
     };
 
-    scanButton.addEventListener('click', () => {
-      // Transition to "Scanning" state
+    scanButton.addEventListener('click', () => handleAction('scan'));
+    bookOnlineButton.addEventListener('click', () => handleAction('book'));
+
+    function handleAction(action) {
+      // Transition to "Processing" state
       scanningMessage.classList.remove('hidden');
       errorMessage.classList.add('hidden');
 
-      // Simulate RFID scanning process
+      // Simulate action process
       setTimeout(() => {
         const scannedRFID = 'rfid12345'; // Simulated RFID scan
-        processRFID(scannedRFID);
-      }, 2000); // Simulate a 2-second scan delay
-    });
+        if (action === 'scan' || action === 'book') {
+          processRFID(scannedRFID);
+        }
+      }, 2000); // Simulate a 2-second delay
+    }
 
     function processRFID(scannedRFID) {
       if (rfidCards[scannedRFID]) {
