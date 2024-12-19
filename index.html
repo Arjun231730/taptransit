@@ -9,7 +9,7 @@
 <body class="bg-gray-900 flex items-center justify-center h-screen">
   <div class="bg-gray-800 shadow-lg rounded-lg w-96 p-8">
     <h2 class="text-2xl font-semibold text-white text-center mb-6">Tap Transit</h2>
-    <form id="loginForm">
+    <form id="rfidForm">
       <div class="mb-4">
         <label for="rfidCard" class="block text-white text-sm font-medium mb-2">Scan RFID Card</label>
         <input 
@@ -17,80 +17,74 @@
           id="rfidCard" 
           class="w-full px-4 py-2 border rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
           placeholder="Scan your RFID card"
-          required
+          disabled
         />
       </div>
-      <div class="mb-4">
-        <label for="password" class="block text-white text-sm font-medium mb-2">Password</label>
-        <input 
-          type="password" 
-          id="password" 
-          class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
-          placeholder="Enter your password"
-          required
-        />
-      </div>
-      <div class="text-right mb-4">
-        <a href="#" class="text-blue-500 text-sm hover:underline">Forgot Password?</a>
-      </div>
+      <div id="scanningMessage" class="text-sm text-blue-400 mb-4 hidden">Scanning...</div>
       <button 
-        type="submit"
-        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4"
+        id="scanButton"
+        type="button"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
-        Login
+        Scan RFID
       </button>
       <button 
         id="bookOnlineButton"
         type="button"
-        class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+        class="w-full bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 mt-4"
       >
         Book Online
       </button>
     </form>
-    <div class="mt-6 text-sm text-center text-gray-600">
-      Don’t have an account? <a href="#" class="text-blue-500 hover:underline">Sign up</a>
-    </div>
     <div id="message" class="mt-4 text-sm text-center text-red-500 hidden"></div>
   </div>
 
   <script>
-    const loginForm = document.getElementById('loginForm');
+    const scanButton = document.getElementById('scanButton');
     const bookOnlineButton = document.getElementById('bookOnlineButton');
+    const rfidInput = document.getElementById('rfidCard');
+    const scanningMessage = document.getElementById('scanningMessage');
     const messageDiv = document.getElementById('message');
 
-    // Example RFID and password (these values should be retrieved securely in a real implementation)
+    // Example RFID card (this value should be fetched securely)
     const exampleRFID = '123456789';
-    const examplePassword = 'password123';
 
-    // Handle manual login form submission
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const rfidCard = document.getElementById('rfidCard').value;
-      const password = document.getElementById('password').value;
+    // Function to simulate an RFID scan
+    function simulateRFIDScan(callback) {
+      scanningMessage.classList.remove('hidden');
+      messageDiv.classList.add('hidden');
 
-      if (rfidCard === exampleRFID && password === examplePassword) {
-        messageDiv.classList.add('hidden');
-        window.location.href = 'edit.html';
-      } else {
-        messageDiv.textContent = 'Invalid RFID card or password';
-        messageDiv.classList.remove('hidden');
-      }
+      // Simulate a delay for scanning (e.g., 3 seconds)
+      setTimeout(() => {
+        scanningMessage.classList.add('hidden');
+        callback(exampleRFID);
+      }, 3000);
+    }
+
+    // Handle "Scan RFID" button click
+    scanButton.addEventListener('click', () => {
+      simulateRFIDScan((scannedRFID) => {
+        if (scannedRFID === exampleRFID) {
+          window.location.href = 'edit.html'; // Redirect after successful login
+        } else {
+          messageDiv.textContent = 'Invalid RFID card. Please try again.';
+          messageDiv.classList.remove('hidden');
+        }
+      });
     });
 
     // Handle "Book Online" button click
     bookOnlineButton.addEventListener('click', () => {
-      // Perform the same task as scanning RFID
-      const rfidCard = exampleRFID; // Automatically use predefined RFID
-      const password = examplePassword; // Automatically use predefined password
-
-      if (rfidCard === exampleRFID && password === examplePassword) {
-        messageDiv.classList.add('hidden');
-        window.location.href = 'edit.html'; // Redirect after successful login
-      } else {
-        messageDiv.textContent = 'Unable to login automatically. Please try again.';
-        messageDiv.classList.remove('hidden');
-      }
+      simulateRFIDScan((scannedRFID) => {
+        if (scannedRFID === exampleRFID) {
+          window.location.href = 'edit.html'; // Redirect after successful login
+        } else {
+          messageDiv.textContent = 'Unable to login automatically. Please try again.';
+          messageDiv.classList.remove('hidden');
+        }
+      });
     });
   </script>
 </body>
 </html>
+
