@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <title>Login Page</title>
+  <title>RFID Login Page</title>
 </head>
 <body class="bg-gray-900 flex items-center justify-center h-screen">
   <!-- Login Container -->
@@ -47,7 +47,7 @@
     const scanningMessage = document.getElementById('scanningMessage');
     const errorMessage = document.getElementById('errorMessage');
 
-    // Simulated RFID data
+    // Simulated RFID card database
     const rfidCards = {
       'rfid12345': { email: 'test@example.com', password: 'password123' },
       'rfid67890': { email: 'user@example.com', password: 'userpassword' }
@@ -57,17 +57,17 @@
     bookOnlineButton.addEventListener('click', () => handleAction('book'));
 
     function handleAction(action) {
-      // Transition to "Processing" state
       scanningMessage.classList.remove('hidden');
       errorMessage.classList.add('hidden');
 
-      // Simulate action process
       setTimeout(() => {
-        const scannedRFID = 'rfid12345'; // Simulated RFID scan
-        if (action === 'scan' || action === 'book') {
+        const scannedRFID = 'rfid12345'; // Replace this with actual RFID scanning logic
+        if (action === 'scan') {
           processRFID(scannedRFID);
+        } else if (action === 'book') {
+          window.location.href = 'book.html'; // Redirect to booking page
         }
-      }, 10000); // Simulate a 10-second delay
+      }, 2000); // Simulate a 2-second RFID scan delay
     }
 
     function processRFID(scannedRFID) {
@@ -79,7 +79,7 @@
         setTimeout(() => {
           console.log(`Logged in as: ${rfidCards[scannedRFID].email}`); // Debugging
           window.location.href = 'edit.html'; // Redirect after login
-        }, 10000); // 10-second logging in delay
+        }, 2000); // Simulate a 2-second login delay
       } else {
         // Show error and reset state
         scanningMessage.classList.add('hidden');
@@ -104,3 +104,4 @@
   </style>
 </body>
 </html>
+
